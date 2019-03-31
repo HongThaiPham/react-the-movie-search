@@ -4,8 +4,9 @@
   "description": "",
   "keywords": [],
   "main": "src/index.js",
+  "license": "MIT",
+  "homepage": "https://hongthaipham.github.io/react-the-movie-search",
   "dependencies": {
-    "gh-pages": "2.0.1",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-scripts": "2.1.8"
@@ -18,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": ""
+    "deploy": "gh-pages -d build"
   },
   "browserslist": [
     ">0.2%",
