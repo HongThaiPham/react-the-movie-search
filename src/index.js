@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
 import "./styles.css";
 
 import Header from "./components/Header";
 import Search from "./components/Search";
 import Movie from "./components/Movie";
 
-const MOVIE_API_URL = "http://www.omdbapi.com/?s=man&apikey=19f6c48c";
+const MOVIE_API_URL = "https://omdbapi.com/?s=man&apikey=19f6c48c";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -15,11 +14,8 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(MOVIE_API_URL)
-      .then(response => {
-        response.json();
-      })
+    fetch(MOVIE_API_URL)
+      .then(response => response.json())
       .then(jsonResponse => {
         setMovies(jsonResponse.Search);
         setLoading(false);
@@ -31,8 +27,7 @@ function App() {
 
     setErrorMessage(null);
 
-    axios
-      .get(`http://www.omdbapi.com/?s=${searchValue}&apikey=19f6c48c`)
+    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=19f6c48c`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
