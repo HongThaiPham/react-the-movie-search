@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-
+import axios from "axios";
 import "./styles.css";
 
 import Header from "./components/Header";
@@ -15,7 +15,8 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    fetch(MOVIE_API_URL)
+    axios
+      .get(MOVIE_API_URL)
       .then(response => {
         response.json();
       })
@@ -30,7 +31,8 @@ function App() {
 
     setErrorMessage(null);
 
-    fetch(`http://www.omdbapi.com/?s=${searchValue}&apikey=19f6c48c`)
+    axios
+      .get(`http://www.omdbapi.com/?s=${searchValue}&apikey=19f6c48c`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
