@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
@@ -6,38 +6,48 @@ import Header from "./components/Header";
 import Search from "./components/Search";
 import Movie from "./components/Movie";
 
+import { initialState, reducer } from "./redux";
+
 const MOVIE_API_URL = "https://omdbapi.com/?s=man&apikey=19f6c48c";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
+  //user Redux
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     fetch(MOVIE_API_URL)
       .then(response => response.json())
       .then(jsonResponse => {
-        setMovies(jsonResponse.Search);
-        setLoading(false);
+        dispatch({
+          type: "SEARCH_MOVIES_SUCCESS",
+          payload: jsonResponse.Search
+        });
       });
   }, []);
 
   const search = searchValue => {
-    setLoading(true);
-
-    setErrorMessage(null);
+    dispatch({
+      type: "SEARCH_MOVIES_REQUEST"
+    });
 
     fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=19f6c48c`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
-          setMovies(jsonResponse.Search);
+          dispatch({
+            type: "SEARCH_MOVIES_SUCCESS",
+            payload: jsonResponse.Search
+          });
         } else {
-          setErrorMessage(jsonResponse.Error);
+          dispatch({
+            type: "SEARCH_MOVIES_FAILURE",
+            payload: jsonResponse.Error
+          });
         }
-        setLoading(false);
       });
   };
+
+  const { movies, errorMessage, loading } = state;
   return (
     <div className="App">
       <Header text="THE MOVIE SEARCH WITH REACT HOOK" />
